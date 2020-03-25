@@ -1,0 +1,70 @@
+scalar DateTime
+scalar Date
+scalar Time
+
+enum Transmission {
+  Automatic
+  Manual
+  Dual
+}
+
+type Vehicle {
+	id: ID!,
+	type: Type,
+	modelCode: String,
+	brandName: String,
+	launchDate: String,
+	createdTime: String,
+	transmission: Transmission,
+	year: Int,
+	published: Boolean,
+	dateTime: DateTime,
+	date: Date,
+	time: Time
+}
+
+type Type {
+    id: ID,
+    name: String
+}
+
+type Query {
+	vehicles(count: Int):[Vehicle]
+	allVehicles:[Vehicle]
+	allTypes:[Type]
+	vehicle(id: Int):Vehicle
+	getType(id: Int):Type
+}
+
+type Mutation {
+	createVehicle(type: TypeInput, modelCode: String!, brandName: String!, transmission: String!, year: Int,
+	    createdTime: String, launchDate: String, dateTime: DateTime, date: Date, time: Time):Vehicle
+	updateVehicle(vehicle: VehicleInput, skipOnNull: Boolean):Vehicle
+	saveVehicle(vehicle: VehicleInput):Vehicle
+	createType(type: TypeInput!):Type
+}
+
+input TypeInput {
+    id: ID
+    name: String
+}
+
+input VehicleInput {
+    id: ID
+    type: TypeInput
+    modelCode: String
+    brandName: String
+    launchDate: String
+    createdTime: String
+    transmission: Transmission
+    year: Int
+    published: Boolean
+    dateTime: DateTime
+    date: Date
+    time: Time
+}
+
+schema {
+    query: Query
+    mutation : Mutation
+}

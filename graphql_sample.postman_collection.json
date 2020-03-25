@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "414ad2d4-1df4-4e45-98ac-b33f62fe9a89",
+		"name": "graphql_sample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/graphql (get all count)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    vehicles(count: 3)   \n    {\n        id\n        type {name} \n        modelCode\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (get all)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    __schema {\n        types {\n            name\n        }\n    }    \n    allVehicles   \n    {\n        __typename\n        id\n        type {name}\n        modelCode\n        createdTime\n    }\n    allTypes\n    {\n        id\n        name\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (vehicle)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query myQuery($idOne:Int, $idTwo:Int, $idThree:Int = 3) {\n    first: vehicle(id: $idOne)\n    {\n        id,\n        type {name},\n        modelCode\n    }\n    #alias: second\n    #fragment: like a template of the response\n    second: vehicle(id: $idTwo)\n    {\n        ...vehiculeFragment\n    }\n    third: vehicle(id: $idThree)\n    {\n        ...vehiculeFragment\n    }\n}\n    \nfragment vehiculeFragment on Vehicle {\n    __typename\n    id\n    type {\n        name\n    }\n    modelCode\n    brandName\n    transmission\n    year\n    published\n    createdTime\n    launchDate\n    dateTime\n    date\n    time\n}",
+						"variables": "{\n\t\"idOne\": \"5\",\n\t\"idTwo\": \"2\"\n}\n"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (create type)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateType($typeInput1: TypeInput,$typeInput2: TypeInput,$typeInput3: TypeInput, $typeInput4: TypeInput) {\n    createType(type: $typeInput1) { id name }\n    createType(type: $typeInput2) { id name }\n    createType(type: $typeInput3) { id name }\n    createType(type: $typeInput4) { id name }\n}",
+						"variables": "{\n\t\"typeInput1\": {\n\t\t\"name\":\"Pickup\"\n\t},\n\t\"typeInput2\": {\n\t\t\"name\":\"Hatchback\"\n\t},\t\n\t\"typeInput3\": {\n\t\t\"name\":\"Sedan\"\n\t},\n\t\"typeInput4\": {\n\t\t\"name\":\"SUV\"\n\t}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (create)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateVehicle($typeInput: TypeInput!){\n    createVehicle(type: $typeInput, modelCode: \"Yaris S\", brandName: \"Toyota\", transmission: \"Dual\", year: 2015, createdTime: \"2020-03-25T09:40:05\", launchDate: \"2015-01-01\", dateTime: \"2020-03-25T09:40:05.255+01:00\", date: \"2020-03-25\", time:\"09:40:05-06:00\")\n    {\n        id\n        type {id name}\n        modelCode\n        brandName\n        transmission\n        year\n        launchDate\n        createdTime\n        dateTime\n        date\n        time\n    }\n}",
+						"variables": "{\n\t\"typeInput\":{\n\t\t\"name\":\"Sedan\"\n\t}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (saveVehicle)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation SaveVehicle($vehicleInput: VehicleInput!) {\n    saveVehicle(vehicle: $vehicleInput)\n    {\n        ...vehiculeFragment\n    }\n}\n\nfragment vehiculeFragment on Vehicle {\n    id\n    type {id name}\n    modelCode\n    brandName\n    transmission\n    year\n    published\n    createdTime\n    launchDate\n    dateTime\n    date\n    time\n}",
+						"variables": "{\n\t\"vehicleInput\":\t{\n\t\t\"type\": {\"name\":\"Pickup\"},\n\t\t\"modelCode\": \"Hilux\",\n\t\t\"brandName\": \"Toyota\",\n\t\t\"transmission\": \"Automatic\",\n\t\t\"year\": 2017,\n\t\t\"published\": true,\n\t\t\"createdTime\": \"2020-03-25 09:40:05\", \n\t\t\"launchDate\": \"2017-01-01\", \n\t\t\"dateTime\": \"2020-03-25T09:40:05.255+01:00\", \n\t\t\"date\": \"2020-03-25\", \n\t\t\"time\":\"09:40:05-06:00\"\n\t}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/graphql (updateVehicle)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation UpdateVehicl($vehicleInput: VehicleInput!) {\n    updateVehicle(vehicle: $vehicleInput, skipOnNull: false)\n    {\n        ...vehiculeFragment\n    }\n}\nfragment vehiculeFragment on Vehicle {\n    id\n    type {id name}\n    modelCode\n    brandName\n    transmission\n    year\n    published\n    createdTime\n    launchDate\n    dateTime\n    date\n    time\n}",
+						"variables": "{\n\t\"vehicleInput\":\t{\n\t\t\"id\": 10,\n\t\t\"type\": {\"name\":\"Pickup\"},\n\t\t\"modelCode\": \"Hilux\",\n\t\t\"brandName\": \"Toyota\",\n\t\t\"transmission\": \"Automatic\",\n\t\t\"year\": 2017,\n\t\t\"published\": false,\n\t\t\"createdTime\": \"2020-03-25 09:40:05\", \n\t\t\"launchDate\": null, \n\t\t\"dateTime\": \"2020-03-25T09:40:05.255+01:00\", \n\t\t\"date\": \"2020-03-25\", \n\t\t\"time\":\"09:40:05-06:00\"\n\t}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

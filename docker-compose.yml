@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql
+    ports:
+      - 12345:3306
+#    command: --default-authentication-plugin=mysql_native_password
+#    restart: always
+    environment:
+      MYSQL_DATABASE: vehicle
+      MYSQL_USER: vehicle
+      MYSQL_PASSWORD: vehicle
+      MYSQL_ROOT_PASSWORD: vehicle
